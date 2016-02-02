@@ -20,6 +20,13 @@ int creer_serveur(int port){
   int socket_serveur;
   socket_serveur = socket(AF_INET, SOCK_STREAM, 0);
 
+  /** Pour pouvoir se reconnecter apres avoir quitte le serveur */
+
+  int optval = 1;
+
+  if(setsockopt(socket_serveur, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(int)) == -1){
+    perror("Ne peut pas etablir l'option SO_REUSEADDR\n");
+  }
   
   /** Traitement du cas d'erreur */
   if(socket_serveur == -1){
@@ -37,16 +44,11 @@ int creer_serveur(int port){
     perror("Erreur lors de l'attente de connexion de la socket serveur\n");
   }
 
-  /** Accepter une connexion */
- 
-
-  /** Ecriture du message de bienvenue */
-
-  /**Fermeture de la socket serveur */
-  //close(socket_serveur);
   
   return socket_serveur;
 }
+
+/** Creer une connexion avec un client */
 
 int start(int socket_serveur){
 
