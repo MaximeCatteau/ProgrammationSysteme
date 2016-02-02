@@ -10,7 +10,9 @@
 int creer_serveur(int port){
 
   /** Parametres lies a la structure */
+
   struct sockaddr_in saddr;
+
   saddr.sin_family = AF_INET; /* Socket ipv4 */
   saddr.sin_port = htons(port); /* Port d'ecoute*/
   saddr.sin_addr.s_addr = INADDR_ANY; /* ecoute sur toutes les interfaces*/
@@ -19,6 +21,7 @@ int creer_serveur(int port){
   socket_serveur = socket(AF_INET, SOCK_STREAM, 0);
 
   int socket_client;
+
   
   /** Traitement du cas d'erreur */
   if(socket_serveur == -1){
@@ -42,12 +45,9 @@ int creer_serveur(int port){
     perror("Erreur lors de la connexion a la socket cliente");
   }
 
-  const char * message_bienvenue =
-    "Bonjour, bienvenue sur mon serveur\n";
-
   /** Ecriture du message de bienvenue */
-  write(socket_client, message_bienvenue, strlen(message_bienvenue));
 
+  /**Fermeture des sockets client & serveur */
   close(socket_serveur);
   close(socket_client);
   
