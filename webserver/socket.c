@@ -6,6 +6,8 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <signal.h>
+#include <stdlib.h>
+
 
 /** Ignorer SIGPIPE */
 
@@ -76,6 +78,20 @@ int start(int socket_serveur){
 
     
     write(socket_client, message_bienvenue, strlen(message_bienvenue));
+
+    int buffer_size = 2048;
+    int mark = 1;
+    while(mark){
+      unsigned char *buffer = calloc(buffer_size, 1);
+      if(read(socket_client, buffer, buffer_size)){
+	write(socket_client, buffer, buffer_size);
+      }
+      else {
+	mark = 0;
+      }
+      free(buffer);
+    }
+    
     return socket_client;
 }
 

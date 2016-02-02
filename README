@@ -1,1 +1,5 @@
-Pour l'instant, il n'y a rien :-)
+1ere semaine de travail : Implementation de l'espace de travail (configuration de GitHub, ...) + mise en place de l'environnement avec creer_serveur et Makefile + main
+
+2eme semaine de travail : Le programme peut créer un client qui se connecte au serveur, certaines erreurs ont été traitées :
+- SO_REUSEADDR
+- SIGPIPE
