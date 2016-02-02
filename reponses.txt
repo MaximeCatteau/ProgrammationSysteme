@@ -1,0 +1,4 @@
+1. Il y a une erreur lors du binding : le serveur est déjà en cours d'utilisation
+2. Le message de bienvenue ne s'affiche pas
+3. telnet n'est pas capable de se connecter au serveur sur l'hote 1, la connexion est donc refusee. Ce probleme est probablement du au type d'adresse
+4. Le message de bienvenue ne s'affiche pas sur le deuxieme client lancé, le serveur ne peut donc pas gérer plusieurs connexions simultanément.

@@ -37,11 +37,31 @@ int creer_serveur(int port){
     perror("Erreur lors de l'attente de connexion de la socket serveur\n");
   }
 
+  /** Accepter une connexion */
+ 
+
   /** Ecriture du message de bienvenue */
 
   /**Fermeture de la socket serveur */
-  close(socket_serveur);
+  //close(socket_serveur);
   
   return socket_serveur;
 }
+
+int start(int socket_serveur){
+
+    int socket_client;
+    socket_client = accept(socket_serveur, NULL, NULL);
+    if(socket_client == -1){
+      perror("Erreur lors de la connexion du client\n");
+    }
+
+    
+    const char *message_bienvenue = "Welcome to the jungle !\n";
+    sleep(1);
+
+    
+    write(socket_client, message_bienvenue, strlen(message_bienvenue));
+    return socket_client;
+  }
 

@@ -7,5 +7,6 @@
     La fonction retourne -1 en cas d ’ erreur ou le descripteur de la
     socket créée . */
 int creer_serveur(int port);
+int start(int socket_serveur);
 
 # endif
