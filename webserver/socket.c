@@ -5,6 +5,15 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <signal.h>
+
+/** Ignorer SIGPIPE */
+
+void initialiser_signaux(void){
+  if(signal(SIGPIPE, SIG_IGN) == SIG_ERR){
+    perror("Erreur dans le SIGPIPE\n");
+  }
+}
 
 
 int creer_serveur(int port){
@@ -27,6 +36,9 @@ int creer_serveur(int port){
   if(setsockopt(socket_serveur, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(int)) == -1){
     perror("Ne peut pas etablir l'option SO_REUSEADDR\n");
   }
+
+  /** SIGPIPE */
+  initialiser_signaux();
   
   /** Traitement du cas d'erreur */
   if(socket_serveur == -1){
@@ -65,5 +77,7 @@ int start(int socket_serveur){
     
     write(socket_client, message_bienvenue, strlen(message_bienvenue));
     return socket_client;
-  }
+}
+
+
 
