@@ -72,14 +72,15 @@ int creer_serveur(int port){
 /** Creer une connexion avec un client */
 
 int start(int socket_serveur){
-
+  while(1){
     int socket_client;
+    int pid;
     socket_client = accept(socket_serveur, NULL, NULL);
+    
     if(socket_client == -1){
       perror("Erreur lors de la connexion du client\n");
     } else { printf("CONNEXION CLIENT OK\n");}
 
-    
     const char *message_bienvenue = "Welcome !\nYou'll find here the best server of N4P2-1 by Maxime Catteau\n";
     sleep(1);
 
@@ -87,6 +88,8 @@ int start(int socket_serveur){
 
     int buffer_size = 2048;
     int mark = 1;
+
+    if((pid = fork()) == 0){
     while(mark){
        unsigned char *buffer = calloc(buffer_size, 1);
        read(socket_client, buffer, buffer_size);
@@ -94,6 +97,8 @@ int start(int socket_serveur){
        
        free(buffer);
      }
-    
     return socket_client;
+    }
+  }
+    
 }
