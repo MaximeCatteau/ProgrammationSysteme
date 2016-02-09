@@ -15,13 +15,20 @@ void initialiser_signaux(void){
   if(signal(SIGPIPE, SIG_IGN) == SIG_ERR){
     perror("Erreur dans le SIGPIPE\n");
   }
+  else {
+    printf("SIGPIPE OK\n");
+  }
 }
 
 
 int creer_serveur(int port){
 
-  /** Parametres lies a la structure */
+  
 
+ /** SIGPIPE */
+  initialiser_signaux();
+
+  /** Parametres lies a la structure */
   struct sockaddr_in saddr;
 
   saddr.sin_family = AF_INET; /* Socket ipv4 */
@@ -39,24 +46,24 @@ int creer_serveur(int port){
     perror("Ne peut pas etablir l'option SO_REUSEADDR\n");
   }
 
-  /** SIGPIPE */
-  initialiser_signaux();
+ 
   
   /** Traitement du cas d'erreur */
   if(socket_serveur == -1){
     perror("Erreur lors de la creation de la socket serveur\n");
-  }
+  } else { printf("CREATION SOCKET SERVEUR OK\n"); }
   
   /** Traitement du bind avec le cas d'erreur associe */
   if(bind(socket_serveur, (struct sockaddr *) &saddr, sizeof(saddr)) == -1){
     perror("Erreur lors du binding de la socket serveur\n");
-  }
+  } else { printf("BINDING OK\n"); }
 
   /** Traitement du listening qui lance l'attente de connexion avec le cas 
    d'erreur */
   if(listen(socket_serveur, 10) == -1){
     perror("Erreur lors de l'attente de connexion de la socket serveur\n");
-  }
+  } else { printf("LISTENING OK\n");}
+
 
   
   return socket_serveur;
@@ -70,30 +77,23 @@ int start(int socket_serveur){
     socket_client = accept(socket_serveur, NULL, NULL);
     if(socket_client == -1){
       perror("Erreur lors de la connexion du client\n");
-    }
+    } else { printf("CONNEXION CLIENT OK\n");}
 
     
-    const char *message_bienvenue = "Welcome to the jungle !\n";
+    const char *message_bienvenue = "Welcome !\nYou'll find here the best server of N4P2-1 by Maxime Catteau\n";
     sleep(1);
 
-    
     write(socket_client, message_bienvenue, strlen(message_bienvenue));
 
     int buffer_size = 2048;
     int mark = 1;
     while(mark){
-      unsigned char *buffer = calloc(buffer_size, 1);
-      if(read(socket_client, buffer, buffer_size)){
-	write(socket_client, buffer, buffer_size);
-      }
-      else {
-	mark = 0;
-      }
-      free(buffer);
-    }
+       unsigned char *buffer = calloc(buffer_size, 1);
+       read(socket_client, buffer, buffer_size);
+       write(socket_client, buffer, buffer_size);
+       
+       free(buffer);
+     }
     
     return socket_client;
 }
-
-
-
