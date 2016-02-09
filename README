@@ -3,3 +3,5 @@
 2eme semaine de travail : Le programme peut créer un client qui se connecte au serveur, certaines erreurs ont été traitées :
 - SO_REUSEADDR
 - SIGPIPE
+
+3eme semaine de travail : Le serveur peut accepter plusieurs clients et autorise la reconnexion d'un client au serveur (qui se serait auparavant déconnecté).
