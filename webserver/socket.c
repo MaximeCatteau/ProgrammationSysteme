@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <stdlib.h>
+#include <sys/wait.h>
 
 
 /** Ignorer SIGPIPE */
@@ -14,6 +15,7 @@
 void traitement_signal(int sig){
 
   printf("Signal %d recu\n", sig);
+  waitpid(-1, NULL, 0);
   
 }
 
@@ -39,8 +41,6 @@ void initialiser_signaux(void){
 }
 
 int creer_serveur(int port){
-
-  
 
  /** SIGPIPE */
   initialiser_signaux();

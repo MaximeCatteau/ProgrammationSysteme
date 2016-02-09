@@ -5,3 +5,4 @@
 - SIGPIPE
 
 3eme semaine de travail : Le serveur peut accepter plusieurs clients et autorise la reconnexion d'un client au serveur (qui se serait auparavant déconnecté).
+Il permet également de tuer les processus zombie.
