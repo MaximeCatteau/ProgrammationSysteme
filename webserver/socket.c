@@ -10,6 +10,8 @@
 #include <sys/wait.h>
 
 
+int socket_client;
+
 /** Ignorer SIGPIPE */
 
 void traitement_signal(int sig){
@@ -63,7 +65,6 @@ int creer_serveur(int port){
     perror("Ne peut pas etablir l'option SO_REUSEADDR\n");
   }
 
- 
   
   /** Traitement du cas d'erreur */
   if(socket_serveur == -1){
@@ -81,7 +82,6 @@ int creer_serveur(int port){
     perror("Erreur lors de l'attente de connexion de la socket serveur\n");
   } else { printf("LISTENING OK\n");}
 
-
   
   return socket_serveur;
 }
@@ -90,7 +90,7 @@ int creer_serveur(int port){
 
 int start(int socket_serveur){
   while(1){
-    int socket_client;
+    //int socket_client;
     int pid;
     socket_client = accept(socket_serveur, NULL, NULL);
     
@@ -98,22 +98,36 @@ int start(int socket_serveur){
       perror("Erreur lors de la connexion du client\n");
     } else { printf("CONNEXION CLIENT OK\n");}
 
+    FILE *fclient = fdopen(socket_client, "w+");
+    
     const char *message_bienvenue = "Welcome !\nYou'll find here the best server of N4P2-1 by Maxime Catteau\n";
     sleep(1);
 
-    write(socket_client, message_bienvenue, strlen(message_bienvenue));
+    fprintf(fclient, message_bienvenue);
+    //write(socket_client, message_bienvenue, strlen(message_bienvenue));
 
     int buffer_size = 2048;
     int mark = 1;
 
+    
+    
     if((pid = fork()) == 0){
     while(mark){
-       unsigned char *buffer = calloc(buffer_size, 1);
+       char *buffer = calloc(buffer_size, 1);
+
+       printf("<Pawnee> %s", fgets(buffer, buffer_size, fclient));
+
+       fprintf(fclient, "<Pawnee> ");
+       fprintf(fclient, buffer);
+
+       /*
        read(socket_client, buffer, buffer_size);
        write(socket_client, buffer, buffer_size);
-       
+       */
        free(buffer);
      }
+    close(socket_client);
+
     return socket_client;
     }
   }
