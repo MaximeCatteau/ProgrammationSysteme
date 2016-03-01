@@ -2,3 +2,15 @@
 2. Le message de bienvenue ne s'affiche pas
 3. telnet n'est pas capable de se connecter au serveur sur l'hote 1, la connexion est donc refusee. Ce probleme est probablement du au type d'adresse
 4. Le message de bienvenue ne s'affiche pas sur le deuxieme client lancé, le serveur ne peut donc pas gérer plusieurs connexions simultanément.
+----------------------------------------------------------------------------
+5.2 Requête GET
+	5.2.1 Manipulations préliminaires
+3. Le message envoyé par le client web est : 
+<Pawnee> GET / HTTP/1.1
+<Pawnee> User-Agent: curl/7.38.0
+<Pawnee> Host: localhost:8080
+<Pawnee> Accept: */*
+
+4. GET correspond à la requête envoyée
+HTTP correspond au protocole utilisé
+1.1 correspond à la version du protocole HTTP

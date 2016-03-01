@@ -6,3 +6,5 @@
 
 3eme semaine de travail : Le serveur peut accepter plusieurs clients et autorise la reconnexion d'un client au serveur (qui se serait auparavant déconnecté).
 Il permet également de tuer les processus zombie.
+
+4eme semaine de travail : Le serveur répond au client en ajoutant un <Pawnee> à chaque appel du client. Petit problème avec le curl (boucle infinie à la fermeture du client)

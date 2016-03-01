@@ -8,6 +8,7 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <sys/wait.h>
+#include <ctype.h>
 
 
 int socket_client;
@@ -86,9 +87,11 @@ int creer_serveur(int port){
   return socket_serveur;
 }
 
+
 /** Creer une connexion avec un client */
 
 int start(int socket_serveur){
+  
   while(1){
     //int socket_client;
     int pid;
@@ -109,30 +112,44 @@ int start(int socket_serveur){
     int buffer_size = 4096;
     int mark = 1;
 
-    
-    
     if((pid = fork()) == 0){
-    while(mark == 1){
-       char *buffer = calloc(buffer_size, 1);
-	 
-       printf("<Pawnee> %s", fgets(buffer, buffer_size, fclient));
+      while(mark == 1){
+	char *buffer = calloc(buffer_size, 1);
+        char * ligne = "";
+	int i;
+	int mots = 0;
+	
+	ligne = fgets(buffer, buffer_size, fclient);
+	int taille = strlen(ligne);
+	
+	for( i = 0; i < taille; i++){
+	  if(isspace(ligne[i]) != 0 || ligne[i] == '\n'){
+	    mots++;
+	  }
+	}
 
-       //fprintf(fclient, "<Pawnee> ");
-       //fprintf(fclient, buffer);
-       
-       /*
-       read(socket_client, buffer, buffer_size);
-       
-       write(socket_client, buffer, buffer_size);
-       */
-       
-       free(buffer);
-     }
-    close(socket_client);
-
-    return socket_client;
-
+	if(mots == 3){
+	  printf("GET => OK");
+	}
+	
+	printf("<Pawnee> %s", ligne);
+	mots = 0;
+	//fprintf(fclient, "<Pawnee> ");
+	//fprintf(fclient, buffer);
+	
+	/*
+	  read(socket_client, buffer, buffer_size);
+	  
+	  write(socket_client, buffer, buffer_size);
+	*/
+	
+	free(buffer);
+      }
+      close(socket_client);
+      
+      return socket_client;
+      
     }
   }
-    
+  
 }
