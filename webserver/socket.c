@@ -106,29 +106,32 @@ int start(int socket_serveur){
     fprintf(fclient, message_bienvenue);
     //write(socket_client, message_bienvenue, strlen(message_bienvenue));
 
-    int buffer_size = 2048;
+    int buffer_size = 4096;
     int mark = 1;
 
     
     
     if((pid = fork()) == 0){
-    while(mark){
+    while(mark == 1){
        char *buffer = calloc(buffer_size, 1);
-
+	 
        printf("<Pawnee> %s", fgets(buffer, buffer_size, fclient));
 
-       fprintf(fclient, "<Pawnee> ");
-       fprintf(fclient, buffer);
-
+       //fprintf(fclient, "<Pawnee> ");
+       //fprintf(fclient, buffer);
+       
        /*
        read(socket_client, buffer, buffer_size);
+       
        write(socket_client, buffer, buffer_size);
        */
+       
        free(buffer);
      }
     close(socket_client);
 
     return socket_client;
+
     }
   }
     
