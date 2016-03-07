@@ -44,10 +44,10 @@ void initialiser_signaux(void){
 }
 
 int creer_serveur(int port){
-
- /** SIGPIPE */
+  
+  /** SIGPIPE */
   initialiser_signaux();
-
+  
   /** Parametres lies a la structure */
   struct sockaddr_in saddr;
 
@@ -116,24 +116,45 @@ int start(int socket_serveur){
       while(mark == 1){
 	char *buffer = calloc(buffer_size, 1);
         char * ligne = "";
+	char *ptr;
 	int i;
 	int mots = 0;
-	
 	ligne = fgets(buffer, buffer_size, fclient);
 	int taille = strlen(ligne);
 	
-	for( i = 0; i < taille; i++){
-	  if(isspace(ligne[i]) != 0 || ligne[i] == '\n'){
-	    mots++;
-	  }
-	}
+	if(strncmp("GET", ligne, 3)== 0){
+	   if(strcmp(strstr(ligne,"HTTP/"), "HTTP")){
+	    printf("HTTP found\n");
+	    if( (ptr = strrchr(ligne, '/')) != NULL){
 
-	if(mots == 3){
-	  printf("GET => OK");
+	      //49 est la valeur ascii de 1
+	      if(ligne[ptr - ligne + 1] == 49){
+		printf("%d\n", ligne[ptr - ligne +1]);
+		printf("Le premier chiffre M vaut bien 1\n");
+
+		if((ptr = strrchr(ligne, '.')) != NULL){
+		  if(ligne[ptr - ligne + 1] == 48 ||ligne[ptr - ligne + 1] == 49){
+		    printf("Le deuxieme chiffre vaut 0 ou 1\n");
+		  }
+		}
+	      }
+	    }
+	  }
+	  for( i = 0; i < taille; i++){
+	    if(isspace(ligne[i]) != 0 || ligne[i] == '\n'){
+	      mots++;
+	    }
+	  }
+	  
+	  if(mots-1 == 3){
+	    printf("GET => OK\n");
+	  }
+   
+	 
 	}
 	
 	printf("<Pawnee> %s", ligne);
-	mots = 0;
+	
 	//fprintf(fclient, "<Pawnee> ");
 	//fprintf(fclient, buffer);
 	

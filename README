@@ -8,3 +8,5 @@
 Il permet également de tuer les processus zombie.
 
 4eme semaine de travail : Le serveur répond au client en ajoutant un <Pawnee> à chaque appel du client. Petit problème avec le curl (boucle infinie à la fermeture du client)
+
+5eme semaine de travail : Problème avec curl résolu, on arrive à récupérer les 3 mots de la première ligne.
