@@ -167,7 +167,6 @@ int start(int socket_serveur){
 	  write(socket_client, buffer, buffer_size);
 	*/
 	
-	printf("<Pawnee> %s", ligne);
 	
 	free(buffer);
       }
