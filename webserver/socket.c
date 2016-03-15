@@ -106,7 +106,7 @@ int start(int socket_serveur){
     const char *message_bienvenue = "Welcome !\nYou'll find here the best server of N4P2-1 by Maxime Catteau\n";
     sleep(1);
 
-    
+    fprintf(fclient, message_bienvenue);
     //write(socket_client, message_bienvenue, strlen(message_bienvenue));
 
     int buffer_size = 4096;
@@ -135,13 +135,12 @@ int start(int socket_serveur){
 		if((ptr = strrchr(ligne, '.')) != NULL){
 		  if(ligne[ptr - ligne + 1] == 48 ||ligne[ptr - ligne + 1] == 49){
 		    printf("Le deuxieme chiffre vaut 0 ou 1\n");
-		    fprintf(fclient, message_bienvenue);
+		    
 		    printf("HTTP/1.1 200 OK\r\nContent-Length: %d\n", (int) sizeof(ligne));
 		  }
 		}
 	      }
-	    }
-	  
+	    }	   
 	  }
 	  for( i = 0; i < taille; i++){
 	    if(isspace(ligne[i]) != 0 || ligne[i] == '\n'){
@@ -158,8 +157,11 @@ int start(int socket_serveur){
 
 	  else{
 	    printf("HTTP/1.1 400 Bad Request\r\n Connection: close\r\nContent-Length: 17\r\n\r\n400 Bad request\r\n");
-	  }	 
+	  }
 	}
+
+
+    
 	//fprintf(fclient, "<Pawnee> ");
 	//fprintf(fclient, buffer);
 	
@@ -168,9 +170,19 @@ int start(int socket_serveur){
 	  
 	  write(socket_client, buffer, buffer_size);
 	*/
+
+	//QUESTION 5.2.3
+	if((ptr = strchr(ligne, '/')) != NULL){
+	  fprintf(fclient, message_bienvenue);
+	}
+
+	
 	
 	free(buffer);
       }
+
+       
+
       close(socket_client);
       
       return socket_client;
